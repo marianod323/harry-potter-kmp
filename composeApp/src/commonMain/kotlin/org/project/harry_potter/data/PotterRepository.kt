@@ -32,7 +32,7 @@ class PotterRepositoryImpl(
     }
 
     override fun getCharacterById(id: String): Flow<Character> = flow {
-        emit(getFavoriteCharacterById(id).first() ?: potterApi.getCharacterById(id)[0])
+        emit(getFavoriteCharacterById(id).first() ?: potterApi.getCharacterById(id))
     }.catch {
         emit(Character())
     }
