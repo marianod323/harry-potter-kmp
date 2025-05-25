@@ -26,8 +26,11 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import harrypotterkmp.composeapp.generated.resources.Res
 import harrypotterkmp.composeapp.generated.resources.compose_multiplatform
+import org.koin.compose.viewmodel.koinViewModel
+import org.project.harry_potter.data.House
 import org.project.harry_potter.screens.CharacterDetails
 import org.project.harry_potter.screens.CharacterList
+import org.project.harry_potter.screens.FavoriteHouseViewModel
 import org.project.harry_potter.screens.Home
 import org.project.harry_potter.screens.detail.CharacterDetailsScreen
 import org.project.harry_potter.screens.list.CharacterListScreen
@@ -37,11 +40,23 @@ import org.project.harry_potter.ui.theme.AppTheme
 @Preview
 fun App() {
 
-    val house by remember {
-        mutableStateOf("gryffindor")
+    val favoriteHouseViewModel = koinViewModel<FavoriteHouseViewModel>(key = "singleton")
+
+    val favorite by favoriteHouseViewModel.getFavoriteHouse().collectAsState(null)
+
+    val favoriteHouse by remember(favorite) {
+        mutableStateOf(
+            when (favorite?.house) {
+                House.GRYFFINDOR -> "gryffindor"
+                House.SLYTHERIN -> "slytherin"
+                House.RAVENCLAW -> "ravenclaw"
+                House.HUFFLEPUFF -> "hufflepuff"
+                else -> "slytherin"
+            }
+        )
     }
 
-    AppTheme(house = house) {
+    AppTheme(house = favoriteHouse) {
         Surface(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars.union(WindowInsets.navigationBars))) {
             val navController = rememberNavController()
 

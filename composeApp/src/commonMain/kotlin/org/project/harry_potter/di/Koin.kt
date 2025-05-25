@@ -9,9 +9,17 @@ import org.koin.dsl.module
 import org.project.harry_potter.data.PotterApi
 import org.project.harry_potter.data.PotterApiImpl
 import org.project.harry_potter.screens.list.CharacterListViewModel
+import org.project.harry_potter.screens.FavoriteHouseViewModel
 import org.koin.core.context.startKoin
-import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.KoinAppDeclaration
+import org.koin.dsl.bind
 import org.project.harry_potter.data.PotterRepository
+import org.project.harry_potter.data.PotterRepositoryImpl
+
+expect fun platformModule(): Module
 
 val dataModule = module {
     single {
@@ -24,22 +32,20 @@ val dataModule = module {
         }
     }
 
-    single<PotterApi> {
-        PotterApiImpl(get())
-    }
-
-    single<PotterRepository> {
-        PotterRepository(get())
-    }
+    singleOf(::PotterApiImpl).bind(PotterApi::class)
+    singleOf(::PotterRepositoryImpl).bind(PotterRepository::class)
 }
 
 val viewModelModule = module {
-    factoryOf(::CharacterListViewModel)
+    viewModelOf(::CharacterListViewModel)
+    viewModelOf(::FavoriteHouseViewModel)
 }
 
-fun initKoin() {
+fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
+        config?.invoke(this)
         modules(
+            platformModule(),
             dataModule,
             viewModelModule
         )

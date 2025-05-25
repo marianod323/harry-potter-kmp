@@ -22,6 +22,7 @@ room = "2.7.1"
 pagingComposeAndroid = "3.3.6"
 androidx-paging = "3.3.6"
 ksp = "2.1.20-1.0.32"
+sqliteBundledAndroid = "2.5.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -52,6 +53,7 @@ androidx-paging-compose-android = { group = "androidx.paging", name = "paging-co
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
+androidx-sqlite-bundled-android = { group = "androidx.sqlite", name = "sqlite-bundled-android", version.ref = "sqliteBundledAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

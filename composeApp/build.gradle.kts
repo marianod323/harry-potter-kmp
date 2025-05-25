@@ -94,6 +94,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.sqlite.bundled.android)
     debugImplementation(compose.uiTooling)
     add("kspAndroid", libs.androidx.room.compiler)
 }
