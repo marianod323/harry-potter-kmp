@@ -38,7 +38,7 @@ import org.project.harry_potter.data.Character
 fun CharacterDetailsScreen(
     character: Character,
     onBackClick: () -> Unit,
-    onSetFavorite: (Character) -> Unit
+    onSetFavorite: (Character, Boolean) -> Unit
 ) {
     if (character.id == "-1") {
         AnimatedVisibility(true) {
@@ -54,7 +54,7 @@ fun CharacterDetailsScreen(
 }
 
 @Composable
-fun CharacterDetails(character: Character, onBackClick: () -> Unit, onSetFavorite: (Character) -> Unit) {
+fun CharacterDetails(character: Character, onBackClick: () -> Unit, onSetFavorite: (Character, Boolean) -> Unit) {
 
     var favoriteState by remember { mutableStateOf(character.isFavorite) }
 
@@ -67,7 +67,7 @@ fun CharacterDetails(character: Character, onBackClick: () -> Unit, onSetFavorit
             IconButton(
                 onClick = {
                     favoriteState = !favoriteState
-                    onSetFavorite(character)
+                    onSetFavorite(character, favoriteState)
                 },
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {

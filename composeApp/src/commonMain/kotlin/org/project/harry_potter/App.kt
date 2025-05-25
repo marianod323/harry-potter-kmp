@@ -78,11 +78,11 @@ fun App() {
             bottomBar = {
                 BottomBar(
                     currentHouse = favoriteHouse,
-                    onNavigateToFavorites = { navController.navigate(FavoritesList) },
-                    onNavigateToAllCharacters = { navController.navigate(CharacterList) },
-                    onNavigateToAllStaff = { navController.navigate(StaffList) },
-                    onNavigateToAllStudents = { navController.navigate(StudentsList) },
-                    onNavigateToSpells = { navController.navigate(SpellsList) },
+                    onNavigateToFavorites = { navController.navigate(FavoritesList) { popUpTo(0) } },
+                    onNavigateToAllCharacters = { navController.navigate(CharacterList) { popUpTo(0) } },
+                    onNavigateToAllStaff = { navController.navigate(StaffList) { popUpTo(0) } },
+                    onNavigateToAllStudents = { navController.navigate(StudentsList) { popUpTo(0) } },
+                    onNavigateToSpells = { navController.navigate(SpellsList) { popUpTo(0) } },
                     onSelectHouse = { house ->
                         favoriteHouseViewModel.setFavoriteHouse(house)
                     }
@@ -106,8 +106,8 @@ fun App() {
                     CharacterDetailsScreen(
                         character = character,
                         onBackClick = { navController.popBackStack() },
-                        onSetFavorite = { favorite ->
-                            characterDetailsViewModel.setFavoriteCharacter(favorite)
+                        onSetFavorite = { favorite, isFavorite ->
+                            characterDetailsViewModel.setFavoriteCharacter(favorite, isFavorite)
                         }
                     )
                 }

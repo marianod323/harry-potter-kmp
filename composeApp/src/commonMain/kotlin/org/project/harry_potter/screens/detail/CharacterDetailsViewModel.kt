@@ -10,12 +10,11 @@ class CharacterDetailsViewModel(private val potterRepository: PotterRepository) 
 
     fun getCharacterById(characterId: String) = potterRepository.getCharacterById(characterId)
 
-    fun setFavoriteCharacter(character: Character) = viewModelScope.launch {
-        if (character.isFavorite) {
-            potterRepository.removeFavoriteCharacter(character)
-        } else {
+    fun setFavoriteCharacter(character: Character, isFavorite: Boolean) = viewModelScope.launch {
+        if (isFavorite) {
             potterRepository.setFavoriteCharacter(character)
+        } else {
+            potterRepository.removeFavoriteCharacter(character)
         }
-
     }
 }
