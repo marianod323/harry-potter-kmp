@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import org.project.harry_potter.data.FavoriteHouse
 
 @Dao
@@ -12,5 +13,5 @@ interface HouseDao {
     suspend fun insert(favoriteHouse: FavoriteHouse)
 
     @Query("SELECT * FROM favorite_house WHERE id = 1")
-    suspend fun getFavoriteHouse(): FavoriteHouse?
+    fun getFavoriteHouse(): Flow<FavoriteHouse?>
 }

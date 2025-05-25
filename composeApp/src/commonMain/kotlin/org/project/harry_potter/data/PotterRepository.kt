@@ -14,6 +14,8 @@ interface PotterRepository {
     fun getAllSpells(): Flow<List<Spell>>
     suspend fun setFavoriteHouse(house: FavoriteHouse)
     fun getFavoriteHouse(): Flow<FavoriteHouse?>
+    suspend fun setFavoriteCharacter(character: Character)
+    fun getFavoriteCharacters(): Flow<List<Character>?>
 }
 
 class PotterRepositoryImpl(
@@ -56,14 +58,13 @@ class PotterRepositoryImpl(
         emit(emptyList())
     }
 
-    override suspend fun setFavoriteHouse(house: FavoriteHouse) {
-        database.houseDao().insert(house)
-    }
+    override suspend fun setFavoriteHouse(house: FavoriteHouse) = database.houseDao().insert(house)
 
-    override fun getFavoriteHouse(): Flow<FavoriteHouse?> = flow {
-        emit(database.houseDao().getFavoriteHouse())
-    }.catch {
-        emit(null)
-    }
+    override fun getFavoriteHouse(): Flow<FavoriteHouse?> = database.houseDao().getFavoriteHouse()
+
+    override suspend fun setFavoriteCharacter(character: Character) = database.characterDao().insert(character)
+
+    override fun getFavoriteCharacters(): Flow<List<Character>> = database.characterDao().getAllCharacters()
+
 
 }

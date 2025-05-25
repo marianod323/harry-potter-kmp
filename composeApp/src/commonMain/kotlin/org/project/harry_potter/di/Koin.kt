@@ -9,6 +9,7 @@ import org.koin.dsl.module
 import org.project.harry_potter.data.PotterApi
 import org.project.harry_potter.data.PotterApiImpl
 import org.project.harry_potter.screens.list.CharacterListViewModel
+import org.project.harry_potter.screens.list.SpellListViewModel
 import org.project.harry_potter.screens.FavoriteHouseViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -39,6 +40,7 @@ val dataModule = module {
 val viewModelModule = module {
     viewModelOf(::CharacterListViewModel)
     viewModelOf(::FavoriteHouseViewModel)
+    viewModelOf(::SpellListViewModel)
 }
 
 fun initKoin(config: KoinAppDeclaration? = null) {

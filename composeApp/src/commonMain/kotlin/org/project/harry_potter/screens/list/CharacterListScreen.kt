@@ -1,5 +1,6 @@
 package org.project.harry_potter.screens.list
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,33 +16,39 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.NoPhotography
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import org.koin.compose.viewmodel.koinViewModel
 import org.project.harry_potter.data.Character
 
 @Composable
-fun CharacterListScreen(onCharacterClick: (Character) -> Unit) {
-    val characterListViewModel = koinViewModel<CharacterListViewModel>()
-
-    val characters by characterListViewModel.getAllCharacters().collectAsState(initial = emptyList())
-
+fun CharacterListScreen(characters: List<Character>, onCharacterClick: (Character) -> Unit) {
     LazyColumn(modifier = Modifier.fillMaxSize().padding(4.dp)) {
+        item {
+            AnimatedVisibility(characters.isEmpty()) {
+                Box(Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+
         items(characters) { character ->
-            CharacterItem(character, onCharacterClick)
-            Spacer(Modifier.size(8.dp))
+            AnimatedVisibility(characters.isNotEmpty()) {
+                CharacterItem(character, onCharacterClick)
+                Spacer(Modifier.size(8.dp))
+            }
         }
     }
 }
@@ -68,7 +75,7 @@ fun CharacterItem(character: Character, onCharacterClick: (Character) -> Unit) {
                 val isWizard = if (character.isWizard) "Wizard" else "Not Wizard!"
                 val actor = character.actor.ifEmpty { "-" }
 
-                Text(character.name, style = TextStyle.Default)
+                Text(character.name, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally))
                 Text("Is it a Wizard? $isWizard", style = TextStyle.Default)
                 Text("Actor: $actor", style = TextStyle.Default)
             }
