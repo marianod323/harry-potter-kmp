@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -51,24 +52,24 @@ fun App() {
                 House.SLYTHERIN -> "slytherin"
                 House.RAVENCLAW -> "ravenclaw"
                 House.HUFFLEPUFF -> "hufflepuff"
-                else -> "slytherin"
+                else -> "gryffindor"
             }
         )
     }
 
     AppTheme(house = favoriteHouse) {
-        Surface(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars.union(WindowInsets.navigationBars))) {
+        Scaffold(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars.union(WindowInsets.navigationBars))) {
             val navController = rememberNavController()
 
-            NavHost(navController = navController, startDestination = Home) {
+            NavHost(navController = navController, startDestination = CharacterList) {
                 composable<Home> {
                     Home(navController)
                 }
 
                 composable<CharacterList> {
-                    CharacterListScreen(
-                        onBackClick = { navController.popBackStack() }
-                    )
+                    CharacterListScreen { character ->
+                        navController.navigate(CharacterDetails(character.id))
+                    }
                 }
 
                 composable<CharacterDetails> { backStackEntry ->
@@ -79,9 +80,6 @@ fun App() {
                 }
             }
         }
-
-
-
     }
 }
 
