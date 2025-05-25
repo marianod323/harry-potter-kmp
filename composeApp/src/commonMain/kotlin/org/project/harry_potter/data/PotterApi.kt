@@ -6,7 +6,7 @@ import io.ktor.client.request.get
 
 interface PotterApi {
     suspend fun getAllCharacters(): List<Character>
-    suspend fun getCharacterById(id: String): Character
+    suspend fun getCharacterById(id: String): List<Character>
     suspend fun getCharactersByHouse(house: String): List<Character>
     suspend fun getAllStudents(): List<Character>
     suspend fun getAllStaff(): List<Character>
@@ -27,12 +27,12 @@ class PotterApiImpl(private val client: HttpClient) : PotterApi {
         }
     }
 
-    override suspend fun getCharacterById(id: String): Character {
+    override suspend fun getCharacterById(id: String): List<Character> {
         return try {
             client.get("$BASE_URL/character/$id").body()
         } catch (e: Exception) {
             e.printStackTrace()
-            Character()
+            listOf()
         }
     }
 

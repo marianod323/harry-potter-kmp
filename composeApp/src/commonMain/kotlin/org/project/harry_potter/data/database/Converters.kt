@@ -25,5 +25,4 @@ class Converters {
     fun toWand(wandString: String?): Wand? {
         return wandString?.let { DefaultJson.decodeFromString<Wand>(it) }
     }
-
 }

@@ -33,6 +33,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
+import org.project.harry_potter.data.Character
 import org.project.harry_potter.data.FavoriteHouse
 import org.project.harry_potter.data.House
 import org.project.harry_potter.screens.CharacterDetails
@@ -44,6 +45,7 @@ import org.project.harry_potter.screens.SpellsList
 import org.project.harry_potter.screens.StaffList
 import org.project.harry_potter.screens.StudentsList
 import org.project.harry_potter.screens.detail.CharacterDetailsScreen
+import org.project.harry_potter.screens.detail.CharacterDetailsViewModel
 import org.project.harry_potter.screens.list.CharacterListScreen
 import org.project.harry_potter.screens.list.CharacterListViewModel
 import org.project.harry_potter.screens.list.SpellListScreen
@@ -98,9 +100,15 @@ fun App() {
                 }
 
                 composable<CharacterDetails> { backStackEntry ->
+                    val characterDetailsViewModel = koinViewModel<CharacterDetailsViewModel>()
+                    val character by characterDetailsViewModel.getCharacterById(backStackEntry.toRoute<CharacterDetails>().id).collectAsState(initial = Character())
+
                     CharacterDetailsScreen(
-                        characterId = backStackEntry.toRoute<CharacterDetails>().id,
-                        onBackClick = { navController.popBackStack() }
+                        character = character,
+                        onBackClick = { navController.popBackStack() },
+                        onSetFavorite = { favorite ->
+                            characterDetailsViewModel.setFavoriteCharacter(favorite)
+                        }
                     )
                 }
 

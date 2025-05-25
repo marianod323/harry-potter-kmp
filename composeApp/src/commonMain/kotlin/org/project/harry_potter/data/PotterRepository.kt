@@ -2,6 +2,7 @@ package org.project.harry_potter.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import org.project.harry_potter.data.database.PotterDatabase
 
@@ -15,7 +16,9 @@ interface PotterRepository {
     suspend fun setFavoriteHouse(house: FavoriteHouse)
     fun getFavoriteHouse(): Flow<FavoriteHouse?>
     suspend fun setFavoriteCharacter(character: Character)
-    fun getFavoriteCharacters(): Flow<List<Character>?>
+    suspend fun removeFavoriteCharacter(character: Character)
+    fun getFavoriteCharacters(): Flow<List<Character>>
+    fun getFavoriteCharacterById(characterId: String): Flow<Character?>
 }
 
 class PotterRepositoryImpl(
@@ -29,7 +32,7 @@ class PotterRepositoryImpl(
     }
 
     override fun getCharacterById(id: String): Flow<Character> = flow {
-        emit(potterApi.getCharacterById(id))
+        emit(getFavoriteCharacterById(id).first() ?: potterApi.getCharacterById(id)[0])
     }.catch {
         emit(Character())
     }
@@ -62,9 +65,18 @@ class PotterRepositoryImpl(
 
     override fun getFavoriteHouse(): Flow<FavoriteHouse?> = database.houseDao().getFavoriteHouse()
 
-    override suspend fun setFavoriteCharacter(character: Character) = database.characterDao().insert(character)
+    override suspend fun setFavoriteCharacter(character: Character) {
+        character.isFavorite = true
+        database.characterDao().insert(character)
+    }
+
+    override suspend fun removeFavoriteCharacter(character: Character) {
+        database.characterDao().delete(character.id)
+    }
 
     override fun getFavoriteCharacters(): Flow<List<Character>> = database.characterDao().getAllCharacters()
+
+    override fun getFavoriteCharacterById(characterId: String): Flow<Character?> = database.characterDao().getFavoriteCharacterById(characterId)
 
 
 }

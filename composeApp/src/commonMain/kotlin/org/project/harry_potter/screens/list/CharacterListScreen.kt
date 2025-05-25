@@ -72,11 +72,9 @@ fun CharacterItem(character: Character, onCharacterClick: (Character) -> Unit) {
 
 
             Column(Modifier.fillMaxHeight().align(Alignment.CenterVertically)) {
-                val isWizard = if (character.isWizard) "Wizard" else "Not Wizard!"
                 val actor = character.actor.ifEmpty { "-" }
 
                 Text(character.name, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally))
-                Text("Is it a Wizard? $isWizard", style = TextStyle.Default)
                 Text("Actor: $actor", style = TextStyle.Default)
             }
         }

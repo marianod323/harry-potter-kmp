@@ -20,6 +20,5 @@ fun FavoriteCharacters(characters: List<Character>?, onCharacterClick: (Characte
         }
     } else {
         CharacterListScreen(characters, onCharacterClick)
-
     }
 }

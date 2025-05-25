@@ -35,5 +35,6 @@ data class Character(
     val alternateActors: List<String> = emptyList(),
     @SerialName("alive")
     val isAlive: Boolean = false,
-    val image: String = ""
+    val image: String = "",
+    var isFavorite: Boolean = false
 )

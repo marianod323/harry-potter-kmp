@@ -15,6 +15,9 @@ interface CharacterDao {
     @Query("SELECT * FROM favorite_characters")
     fun getAllCharacters(): Flow<List<Character>>
 
-    @Delete
-    suspend fun delete(character: Character)
+    @Query("SELECT * FROM favorite_characters WHERE id = :characterId")
+    fun getFavoriteCharacterById(characterId: String): Flow<Character?>
+
+    @Query("DELETE FROM favorite_characters WHERE id = :characterId")
+    suspend fun delete(characterId: String)
 }
