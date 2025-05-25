@@ -9,6 +9,7 @@ import org.koin.dsl.module
 import org.project.harry_potter.data.PotterApi
 import org.project.harry_potter.data.PotterApiImpl
 import org.koin.core.context.startKoin
+import org.project.harry_potter.data.PotterRepository
 
 val dataModule = module {
     single {
@@ -23,6 +24,10 @@ val dataModule = module {
 
     single<PotterApi> {
         PotterApiImpl(get())
+    }
+
+    single {
+        PotterRepository(get())
     }
 }
 
