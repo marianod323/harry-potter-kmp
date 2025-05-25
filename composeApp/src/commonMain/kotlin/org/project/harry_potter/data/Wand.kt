@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class Wand(
     val wood: String = "",
     val core: String = "",
-    val length: Double = 0.0
+    val length: Double? = 0.0
 )

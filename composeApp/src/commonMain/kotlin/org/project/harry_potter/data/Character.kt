@@ -1,18 +1,22 @@
 package org.project.harry_potter.data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Entity(tableName = "favorite_characters")
 data class Character(
+    @PrimaryKey
     val id: String = "-1",
     val name: String = "",
     @SerialName("alternate_names")
     val alternateNames: List<String> = emptyList(),
     val species: String = "",
     val house: String = "",
-    val dateOfBirth: String = "",
-    val yearOfBirth: Int = -1,
+    val dateOfBirth: String? = "",
+    val yearOfBirth: Int? = -1,
     @SerialName("wizard")
     val isWizard: Boolean = false,
     val ancestry: String = "",

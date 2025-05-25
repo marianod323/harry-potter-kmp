@@ -3,16 +3,21 @@ package org.project.harry_potter
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
@@ -26,21 +31,29 @@ import org.project.harry_potter.screens.CharacterList
 import org.project.harry_potter.screens.Home
 import org.project.harry_potter.screens.detail.CharacterDetailsScreen
 import org.project.harry_potter.screens.list.CharacterListScreen
+import org.project.harry_potter.ui.theme.AppTheme
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
-        Surface {
+
+    val house by remember {
+        mutableStateOf("gryffindor")
+    }
+
+    AppTheme(house = house) {
+        Surface(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars.union(WindowInsets.navigationBars))) {
             val navController = rememberNavController()
 
             NavHost(navController = navController, startDestination = Home) {
                 composable<Home> {
-                    Home()
+                    Home(navController)
                 }
 
                 composable<CharacterList> {
-                    CharacterListScreen()
+                    CharacterListScreen(
+                        onBackClick = { navController.popBackStack() }
+                    )
                 }
 
                 composable<CharacterDetails> { backStackEntry ->
@@ -58,7 +71,7 @@ fun App() {
 }
 
 @Composable
-fun Home() {
+fun Home(navController: NavController) {
     var showContent by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
@@ -66,6 +79,9 @@ fun Home() {
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Button(onClick = { navController.navigate(CharacterList) }) {
+            Text("go to list")
+        }
         Button(onClick = { showContent = !showContent }) {
             Text("Click me!")
         }

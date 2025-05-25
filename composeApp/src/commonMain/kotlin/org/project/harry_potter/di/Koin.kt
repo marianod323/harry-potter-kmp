@@ -8,7 +8,9 @@ import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import org.project.harry_potter.data.PotterApi
 import org.project.harry_potter.data.PotterApiImpl
+import org.project.harry_potter.screens.list.CharacterListViewModel
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.factoryOf
 import org.project.harry_potter.data.PotterRepository
 
 val dataModule = module {
@@ -26,15 +28,20 @@ val dataModule = module {
         PotterApiImpl(get())
     }
 
-    single {
+    single<PotterRepository> {
         PotterRepository(get())
     }
+}
+
+val viewModelModule = module {
+    factoryOf(::CharacterListViewModel)
 }
 
 fun initKoin() {
     startKoin {
         modules(
-            dataModule
+            dataModule,
+            viewModelModule
         )
     }
 }
